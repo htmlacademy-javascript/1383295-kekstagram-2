@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Рахим Абдраев](https://up.htmlacademy.ru/javascript-individual/2/user/1383295).
-* Наставник: `Евгений Лепешкин`.
+* Наставник: [Евгений Лепешкин](https://htmlacademy.ru/profile/spearance).
 
 ---
 
