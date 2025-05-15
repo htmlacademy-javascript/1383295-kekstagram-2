@@ -1,5 +1,7 @@
 import {randomIntFromInterval} from './utility.js';
 import {comments} from './comments.js';
+import {renderPhotos} from './render.js';
+
 
 const PHOTO_COUNT = 25;
 const LIKES_MIN = 15;
@@ -11,7 +13,7 @@ const photos = [];
 
 const addPhoto = (index) => ({
   id: index,
-  url: `photos/{{${index + 1}}}.jpg`,
+  url: `photos/${index + 1}.jpg`,
   description: descriptions[randomIntFromInterval(0, descriptions.length - 1)],
   likes: randomIntFromInterval(LIKES_MIN, LIKES_MAX),
   comments: comments
@@ -25,3 +27,4 @@ const addPhotos = () => {
 
 addPhotos();
 
+renderPhotos(photos);
