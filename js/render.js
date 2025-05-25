@@ -1,3 +1,6 @@
+import {showBigPicture} from './big-photo.js';
+
+
 const userPhotosContainer = document.querySelector('.pictures');
 const userPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
@@ -9,7 +12,15 @@ const renderPhoto = (photo) => {
   photoElement.querySelector('.picture__img').src = photo.url;
   photoElement.querySelector('.picture__img').alt = photo.description;
   photoElement.querySelector('.picture__likes').textContent = photo.likes;
-  photoElement.querySelector('.picture__comments').textContent = photo.comments.length;
+
+  const onPhotoElementClick = (evt) => {
+    evt.preventDefault();
+
+    showBigPicture(photo);
+  };
+
+  photoElement.addEventListener('click', onPhotoElementClick);
+
   return photoElement;
 };
 
