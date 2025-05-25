@@ -32,5 +32,3 @@ addPhotos();
 
 renderPhotos(photos);
 
-// let x = Array.from({length: randomIntFromInterval(0, 30)}, makeComment);
-// console.log(x)
