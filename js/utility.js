@@ -10,4 +10,13 @@ const toggleClass = (element, className = '') => {
 };
 const isEscapeKey = (evt) => evt.key === 'ESCAPE';
 
-export {COMMENTS_MIN, COMMENTS_MAX, randomIntFromInterval, toggleClass, isEscapeKey};
+const makeElement = function (tagname, className, text) {
+  const element = document.createElement(tagname);
+  element.classList.add(className);
+  if (text) {
+    element.textContent = text;
+  }
+  return element;
+};
+
+export {COMMENTS_MIN, COMMENTS_MAX, randomIntFromInterval, toggleClass, isEscapeKey, makeElement};
