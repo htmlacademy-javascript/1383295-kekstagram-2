@@ -1,4 +1,4 @@
-import { toggleClass, makeElement } from './utility.js';
+import { toggleClass, makeElement, isEscapeKey} from './utility.js';
 
 const COMMENTS_LIMIT = 5;
 const bigPicture = document.querySelector('.big-picture');
@@ -17,7 +17,6 @@ const closeBigPicture = () => {
   numShownComments = COMMENTS_LIMIT;
 };
 
-
 const hideComments = function () {
   for (let i = numShownComments; i < renderedComments.length; i++) {
     renderedComments[i].style.display = 'none';
@@ -35,7 +34,7 @@ const showComments = function () {
 };
 
 const onBigPictureEscKeyDown = (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey(evt)) {
     closeBigPicture();
   }
 };
