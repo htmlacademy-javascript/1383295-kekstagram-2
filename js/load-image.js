@@ -6,6 +6,7 @@ import { errorMessage, isDescriptionValid } from './check-description-validity.j
 const formElement = document.querySelector('.img-upload__form');
 const hashtagsElement = document.querySelector('.text__hashtags');
 const descriptionElement = document.querySelector('.text__description');
+const formSubmit = document.querySelector('.img-upload__submit');
 
 modalMenu();
 
@@ -19,11 +20,13 @@ const loadImage = () => {
   pristine.addValidator(hashtagsElement, isHashtagsValid, error, 2, false);
   pristine.addValidator(descriptionElement, isDescriptionValid, errorMessage, 2, false);
 
-  formElement.addEventListener('submit', (evt) => {
+  formSubmit.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    pristine.validate();
+    if (pristine.validate()) {
+      hashtagsElement.value = hashtagsElement.value.trim().replaceAll(/\s+/g, ' ');
+      formElement.submit();
+    }
   });
-
 };
 
 export {loadImage};
