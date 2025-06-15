@@ -12,7 +12,6 @@ const renderedComments = commentsList.children;
 let numShownComments = COMMENTS_LIMIT;
 
 const closeBigPicture = () => {
-  // document.removeEventListener('keydown', onBigPictureEscKeyDown);
   toggleClass(bigPicture, 'hidden');
   numShownComments = COMMENTS_LIMIT;
 };
