@@ -16,14 +16,14 @@ const closeBigPicture = () => {
   numShownComments = COMMENTS_LIMIT;
 };
 
-const hideComments = function () {
+const hideComments = () => {
   for (let i = numShownComments; i < renderedComments.length; i++) {
     renderedComments[i].style.display = 'none';
   }
   numShownComments += COMMENTS_LIMIT;
 };
 
-const showComments = function () {
+const showComments = () => {
   if (numShownComments > renderedComments.length) {
     numShownComments = renderedComments.length;
   }
@@ -66,15 +66,9 @@ const getMoreComments = () => {
   showComments();
   numShownComments += COMMENTS_LIMIT;
 
-  const array = Array.from(renderedComments);
-  const array1 = array.filter((element) => {
-    if (window.getComputedStyle(element).display === 'flex') {
-      return true;
-    } else {
-      return false;
-    }
-  });
-  shownCommentCount.textContent = array1.length;
+  const allComments = Array.from(renderedComments);
+  const visibleComments = allComments.filter((element) => window.getComputedStyle(element).display === 'flex');
+  shownCommentCount.textContent = visibleComments.length;
 };
 
 

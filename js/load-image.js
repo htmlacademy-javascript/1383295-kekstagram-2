@@ -1,12 +1,17 @@
 import '../vendor/pristine/pristine.min.js';
 import { modalMenu } from './modal.js';
-import { error, isHashtagsValid } from './check-hashtag-validity.js';
-import { errorMessage, isDescriptionValid } from './check-description-validity.js';
+import {errorText, isHashtagsValid, isDescriptionValid, errorMessageDescription} from './validation.js';
+
+import { sendData } from './api.js';
+import { showAlert } from './utility.js';
+import { appendNotification, closeNotification } from './notification-module.js';
 
 const formElement = document.querySelector('.img-upload__form');
 const hashtagsElement = document.querySelector('.text__hashtags');
 const descriptionElement = document.querySelector('.text__description');
-const formSubmit = document.querySelector('.img-upload__submit');
+
+const templateSuccess = document.querySelector('#success').content.querySelector('.success');
+const templateError = document.querySelector('#error').content.querySelector('.error');
 
 modalMenu();
 
@@ -17,16 +22,23 @@ const loadImage = () => {
     errorTextParent: 'img-upload__field-wrapper',
   });
 
-  pristine.addValidator(hashtagsElement, isHashtagsValid, error, 2, false);
-  pristine.addValidator(descriptionElement, isDescriptionValid, errorMessage, 2, false);
+  pristine.addValidator(hashtagsElement, isHashtagsValid, errorText, 2, false);
+  pristine.addValidator(descriptionElement, isDescriptionValid, errorMessageDescription, 2, false);
 
-  formSubmit.addEventListener('submit', (evt) => {
+  formElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
+
+    console.log(pristine);
+
     if (pristine.validate()) {
-      hashtagsElement.value = hashtagsElement.value.trim().replaceAll(/\s+/g, ' ');
-      formElement.submit();
+      console.log('все ок');
+    } else {
+      console.log('есть вопросики');
     }
   });
+
+
 };
 
 export {loadImage};
+
