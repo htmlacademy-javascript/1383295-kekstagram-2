@@ -1,10 +1,10 @@
-import {numDecline} from './utility.js';
+import {numDecline} from '../utility.js';
 const MAX_HASHTAGS = 5;
 const MAX_SYMBOLS = 20;
 
 let errorMessage = '';
 
-const error = () => errorMessage;
+const errorText = () => errorMessage;
 
 const isHashtagsValid = (value) => {
   errorMessage = '';
@@ -57,4 +57,4 @@ const isHashtagsValid = (value) => {
   });
 };
 
-export {error, isHashtagsValid};
+export {errorText, isHashtagsValid};

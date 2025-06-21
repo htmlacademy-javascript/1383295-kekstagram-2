@@ -1,6 +1,6 @@
 import {isEscapeKey} from './utility.js';
-import { onSmallerClick, onBiggerClick } from './scale-image.js';
-import {onEffectRadioBtnClick} from './edite-image.js';
+import {onSmallerClick, onBiggerClick} from './slider&scale/scale-image.js';
+import {onEffectRadioBtnClick} from './slider&scale/slider.js';
 
 const imgUploadInput = document.querySelector('.img-upload__input');
 const imgOverlay = document.querySelector('.img-upload__overlay');
@@ -12,6 +12,10 @@ const smallerClick = previewContainer.querySelector('.scale__control--smaller');
 
 const uploadForm = document.querySelector('.img-upload__form');
 const effectsList = uploadForm.querySelector('.effects__list');
+
+//После удалить!
+imgOverlay.classList.remove('hidden');
+document.body.classList.add('modal-open');
 
 const modalMenu = ()=> {
   const onBigPictureEscKeyDown = (evt) => {

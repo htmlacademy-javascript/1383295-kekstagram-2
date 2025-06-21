@@ -1,4 +1,4 @@
-import {Effects, StyleFilterByEffects, getEffectSelector} from './slider.js';
+import {Effects, StyleFilterByEffects, getEffectSelector} from './slider-settings.js';
 const EFFECT_LEVEL_MAX = 100;
 
 const uploadForm = document.querySelector('.img-upload__form');
