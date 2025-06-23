@@ -6,7 +6,6 @@ import {onSmallerClick, onBiggerClick} from './slider&scale/scale-image.js';
 import {onEffectRadioBtnClick, resetFilter} from './slider&scale/slider.js';
 
 import { sendData } from './api.js';
-// import { showAlert } from './utility.js';
 import { appendNotification} from './notification-module.js';
 
 const formElement = document.querySelector('.img-upload__form');
