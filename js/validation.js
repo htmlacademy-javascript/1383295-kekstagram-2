@@ -1,13 +1,17 @@
 import {numDecline} from './utility.js';
+
 const MAX_HASHTAGS = 5;
 const MAX_SYMBOLS = 20;
+const MAX_DESCRIPTION = 140;
 
-let errorMessage = '';
+let errorHashtags = '';
+const errorMessageDescription = () => `Длина комментария не может составлять больше ${MAX_DESCRIPTION} символов'`;
+const isDescriptionValid = (description) => description.length < MAX_DESCRIPTION;
 
-const error = () => errorMessage;
+const errorText = () => errorHashtags;
 
 const isHashtagsValid = (value) => {
-  errorMessage = '';
+  errorHashtags = '';
 
   const inputText = value.toLowerCase().trim();
 
@@ -51,10 +55,10 @@ const isHashtagsValid = (value) => {
     const isInvalid = rule.check;
 
     if (isInvalid) {
-      errorMessage = rule.error;
+      errorHashtags = rule.error;
     }
     return !isInvalid;
   });
 };
 
-export {error, isHashtagsValid};
+export {errorText, isHashtagsValid, isDescriptionValid, errorMessageDescription};

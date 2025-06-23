@@ -1,11 +1,17 @@
-import {photos, addPhotos} from './add-photos.js';
 import {renderPhotos} from './render.js';
-import { loadImage } from './load-image.js';
+import {setUserFormSubmit} from './load-image.js';
+import {getData} from './api.js';
+import {showAlert} from './utility.js';
 
+getData()
+  .then((photos) => {
+    renderPhotos(photos);
+  })
+  .catch(
+    (err) => {
+      showAlert(err.message);
+    }
+  );
 
-addPhotos();
-
-renderPhotos(photos);
-
-loadImage();
+setUserFormSubmit();
 
