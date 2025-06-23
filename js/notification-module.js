@@ -5,13 +5,19 @@ const body = document.body;
 const closeNotification = (evt) => {
   evt.stopPropagation();
   const existElement = document.querySelector('.success');
-  const errorElement = document.querySelector('.error');
-  const closeButton = document.querySelector('button');
   const successBtn = document.querySelector('.success__button');
-  if (evt.target === successBtn || evt.target === closeButton || isEscapeKey(evt) || evt.target === existElement) {
+  const errorElement = document.querySelector('.error');
+  const errorbtn = document.querySelector('.error__button');
+  if (evt.target === successBtn || isEscapeKey(evt) || evt.target === existElement) {
     existElement.remove();
 
-    // errorElement.remove();
+    body.removeEventListener('click', closeNotification);
+    body.removeEventListener('keydown', closeNotification);
+  }
+  if (evt.target === errorbtn || isEscapeKey(evt) || evt.target === errorElement) {
+    existElement.remove();
+    errorElement.remove();
+
     body.removeEventListener('click', closeNotification);
     body.removeEventListener('keydown', closeNotification);
   }
@@ -26,4 +32,4 @@ const appendNotification = (template, trigger = null) => {
 };
 
 
-export {closeNotification, appendNotification};
+export {appendNotification};

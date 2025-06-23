@@ -1,5 +1,5 @@
 import {renderPhotos} from './render.js';
-import {lol} from './load-image.js';
+import {setUserFormSubmit} from './load-image.js';
 import {getData} from './api.js';
 import {showAlert} from './utility.js';
 
@@ -13,5 +13,5 @@ getData()
     }
   );
 
-lol();
+setUserFormSubmit();
 

@@ -3,16 +3,16 @@ import {errorText, isHashtagsValid, isDescriptionValid, errorMessageDescription}
 
 import {isEscapeKey, toggleClass} from './utility.js';
 import {onSmallerClick, onBiggerClick} from './slider&scale/scale-image.js';
-import {onEffectRadioBtnClick} from './slider&scale/slider.js';
+import {onEffectRadioBtnClick, resetFilter} from './slider&scale/slider.js';
 
 import { sendData } from './api.js';
 // import { showAlert } from './utility.js';
-import { appendNotification, closeNotification } from './notification-module.js';
+import { appendNotification} from './notification-module.js';
 
 const formElement = document.querySelector('.img-upload__form');
-const formElement1 = document.querySelector('#upload-select-image');
 const biggerClick = formElement.querySelector('.scale__control--bigger');
 const smallerClick = formElement.querySelector('.scale__control--smaller');
+const imgPreview = formElement.querySelector('img');
 const effectsList = formElement.querySelector('.effects__list');
 const hashtagsElement = formElement.querySelector('.text__hashtags');
 const descriptionElement = formElement.querySelector('.text__description');
@@ -24,16 +24,13 @@ const imgUploadCancel = document.querySelector('.img-upload__cancel');
 const templateSuccess = document.querySelector('#success').content.querySelector('.success');
 const templateError = document.querySelector('#error').content.querySelector('.error');
 
-//После удалить!
-imgOverlay.classList.remove('hidden');
-document.body.classList.add('modal-open');
-
-//Закрывает и Открывает модальное окно
+//Закрывает и Открывает модальное окно, сброс настроек
 const closeOpenModal = () => {
   toggleClass(imgOverlay, 'hidden');
   toggleClass(document.body, 'modal-open');
-  imgUploadInput.value = '';
-  // formElement1.reset();
+
+  imgPreview.style.transform = `scale(${100}%)`;
+  resetFilter();
 };
 
 //Предупреждает закрытие модального окна при наборе хештегов и комментария
@@ -57,20 +54,22 @@ const pristine = new Pristine(formElement, {
 
 const setUserFormSubmit = () => {
   formElement.addEventListener('submit', (evt) => {
+
     evt.preventDefault();
     const isValid = pristine.validate();
 
     if (isValid) {
-      sendData(new FormData(evt.target))
-        .try (appendNotification(templateSuccess))
-        .catch (appendNotification(templateError));
+      sendData(new FormData(formElement))
+        .then(appendNotification(templateSuccess))
+        .then(formElement.reset())
+        .then(closeOpenModal())
+        .catch (
+          () => {
+            appendNotification(templateError);
+          }
+        );
     }
   });
-};
-setUserFormSubmit();
-
-const lol = () => {
-  console.log('Hello');
 };
 
 
@@ -83,5 +82,5 @@ effectsList.addEventListener('change', onEffectRadioBtnClick);
 pristine.addValidator(hashtagsElement, isHashtagsValid, errorText, 2, false);
 pristine.addValidator(descriptionElement, isDescriptionValid, errorMessageDescription, 2, false);
 
-export {lol};
+export {setUserFormSubmit};
 

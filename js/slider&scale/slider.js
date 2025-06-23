@@ -57,4 +57,4 @@ effectSlider.noUiSlider.on('update', () => {
   });
 });
 
-export {onEffectRadioBtnClick};
+export {onEffectRadioBtnClick, resetFilter};
