@@ -5,10 +5,13 @@ const body = document.body;
 const closeNotification = (evt) => {
   evt.stopPropagation();
   const existElement = document.querySelector('.success');
+  const errorElement = document.querySelector('.error');
   const closeButton = document.querySelector('button');
-  console.log(evt.target, existElement);
-  if (evt.target === existElement || evt.target === closeButton || isEscapeKey(evt)) {
+  const successBtn = document.querySelector('.success__button');
+  if (evt.target === successBtn || evt.target === closeButton || isEscapeKey(evt) || evt.target === existElement) {
     existElement.remove();
+
+    // errorElement.remove();
     body.removeEventListener('click', closeNotification);
     body.removeEventListener('keydown', closeNotification);
   }
@@ -21,5 +24,6 @@ const appendNotification = (template, trigger = null) => {
   body.addEventListener('click', closeNotification);
   body.addEventListener('keydown', closeNotification);
 };
+
 
 export {closeNotification, appendNotification};

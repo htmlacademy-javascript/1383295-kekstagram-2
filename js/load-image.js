@@ -1,44 +1,87 @@
 import '../vendor/pristine/pristine.min.js';
-import { modalMenu } from './modal.js';
 import {errorText, isHashtagsValid, isDescriptionValid, errorMessageDescription} from './validation.js';
 
+import {isEscapeKey, toggleClass} from './utility.js';
+import {onSmallerClick, onBiggerClick} from './slider&scale/scale-image.js';
+import {onEffectRadioBtnClick} from './slider&scale/slider.js';
+
 import { sendData } from './api.js';
-import { showAlert } from './utility.js';
+// import { showAlert } from './utility.js';
 import { appendNotification, closeNotification } from './notification-module.js';
 
 const formElement = document.querySelector('.img-upload__form');
-const hashtagsElement = document.querySelector('.text__hashtags');
-const descriptionElement = document.querySelector('.text__description');
+const formElement1 = document.querySelector('#upload-select-image');
+const biggerClick = formElement.querySelector('.scale__control--bigger');
+const smallerClick = formElement.querySelector('.scale__control--smaller');
+const effectsList = formElement.querySelector('.effects__list');
+const hashtagsElement = formElement.querySelector('.text__hashtags');
+const descriptionElement = formElement.querySelector('.text__description');
+
+const imgUploadInput = document.querySelector('.img-upload__input');
+const imgOverlay = document.querySelector('.img-upload__overlay');
+const imgUploadCancel = document.querySelector('.img-upload__cancel');
 
 const templateSuccess = document.querySelector('#success').content.querySelector('.success');
 const templateError = document.querySelector('#error').content.querySelector('.error');
 
-modalMenu();
+//После удалить!
+imgOverlay.classList.remove('hidden');
+document.body.classList.add('modal-open');
 
-const loadImage = () => {
-  const pristine = new Pristine(formElement, {
-    classTo: 'img-upload__field-wrapper',
-    errorClass: 'img-upload__field-wrapper--error',
-    errorTextParent: 'img-upload__field-wrapper',
-  });
-
-  pristine.addValidator(hashtagsElement, isHashtagsValid, errorText, 2, false);
-  pristine.addValidator(descriptionElement, isDescriptionValid, errorMessageDescription, 2, false);
-
-  formElement.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    console.log(pristine);
-
-    if (pristine.validate()) {
-      console.log('все ок');
-    } else {
-      console.log('есть вопросики');
-    }
-  });
-
-
+//Закрывает и Открывает модальное окно
+const closeOpenModal = () => {
+  toggleClass(imgOverlay, 'hidden');
+  toggleClass(document.body, 'modal-open');
+  imgUploadInput.value = '';
+  // formElement1.reset();
 };
 
-export {loadImage};
+//Предупреждает закрытие модального окна при наборе хештегов и комментария
+const onBigPictureEscKeyDown = (evt) => {
+  if (isEscapeKey(evt)
+    && !evt.target.classList.contains('text__hashtags')
+    && !evt.target.classList.contains('text__description')
+  ) {
+    evt.preventDefault();
+    closeOpenModal();
+  }
+};
+
+//Pristine
+const pristine = new Pristine(formElement, {
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'img-upload__field-wrapper--error',
+  errorTextParent: 'img-upload__field-wrapper',
+});
+
+
+const setUserFormSubmit = () => {
+  formElement.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+
+    if (isValid) {
+      sendData(new FormData(evt.target))
+        .try (appendNotification(templateSuccess))
+        .catch (appendNotification(templateError));
+    }
+  });
+};
+setUserFormSubmit();
+
+const lol = () => {
+  console.log('Hello');
+};
+
+
+imgUploadInput.addEventListener('change', closeOpenModal);
+imgUploadCancel.addEventListener('click', closeOpenModal);
+document.addEventListener('keydown', onBigPictureEscKeyDown);
+smallerClick.addEventListener('click', onSmallerClick);
+biggerClick.addEventListener('click', onBiggerClick);
+effectsList.addEventListener('change', onEffectRadioBtnClick);
+pristine.addValidator(hashtagsElement, isHashtagsValid, errorText, 2, false);
+pristine.addValidator(descriptionElement, isDescriptionValid, errorMessageDescription, 2, false);
+
+export {lol};
 

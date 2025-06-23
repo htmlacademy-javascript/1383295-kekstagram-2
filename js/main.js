@@ -1,5 +1,5 @@
 import {renderPhotos} from './render.js';
-import {loadImage} from './load-image.js';
+import {lol} from './load-image.js';
 import {getData} from './api.js';
 import {showAlert} from './utility.js';
 
@@ -12,6 +12,6 @@ getData()
       showAlert(err.message);
     }
   );
-loadImage();
 
+lol();
 
