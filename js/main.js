@@ -1,32 +1,21 @@
+const RANDOM_PHOTOS_NUMERO = 10;
 import {renderPhotos} from './render.js';
-import {setUserFormSubmit, showImgFiters, setRangePhotos} from './load-image.js';
+import {setUserFormSubmit, showImgFiters, setPopularPhotos, setDefaultPhotos, setRandomPhotos} from './load-image.js';
 import {getData} from './api.js';
-import {showAlert} from './utility.js';
-
-// const income = [
-//   {
-//     id: 0,
-//     likes: 25
-//   },
-//   {
-//     id: 1,
-//     likes: 17
-//   },
-//   {
-//     id: 2,
-//     likes: 32
-//   }
-// ];
-// console.log(income);
+import {showAlert, } from './utility.js';
 
 
 getData()
   .then((photos) => {
-    console.log(photos);
     renderPhotos(photos);
 
-    const popular = photos.sort((min, max) => max.likes - min.likes);
-    setRangePhotos(() => renderPhotos(popular));
+    setDefaultPhotos(() => renderPhotos(photos));
+
+    const popular = photos.slice().sort((min, max) => max.likes - min.likes);
+    setPopularPhotos(() => renderPhotos(popular));
+
+    const randomPhotos = photos.slice().sort(() => Math.random() - 0.5).splice(0, RANDOM_PHOTOS_NUMERO);
+    setRandomPhotos(() => renderPhotos(randomPhotos));
   })
   .then(showImgFiters())
   .catch(

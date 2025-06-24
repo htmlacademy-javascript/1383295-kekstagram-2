@@ -27,35 +27,42 @@ const imgFiters = document.querySelector('.img-filters');
 const imgFiltersForm = document.querySelector('.img-filters__form');
 const imgFilterButtons = imgFiltersForm.children;
 const pictures = document.getElementsByClassName('picture');
-// const popularFilterButton = document.querySelector('#filter-discussed');
+const popularFilterButton = document.querySelector('#filter-discussed');
+const defaultFilterButton = document.querySelector('#filter-default');
+const randomFilterButton = document.querySelector('#filter-random');
 
 const selectFilterButton = (evt) => {
-  let target = evt.target;
-  //Выбырает фильтр
   for (let i = 0; i < imgFilterButtons.length; i++) {
     imgFilterButtons[i].classList.remove('img-filters__button--active');
   }
-  target.classList.add('img-filters__button--active');
-  if (target.getAttribute('id') === 'filter-default') {
-
-  }
-
-  console.log(evt.target);
-  console.log('selectFilterButton');
+  evt.target.classList.add('img-filters__button--active');
 };
 
 const deletePictures = () => {
-  //Удаляет фотки
   for (let i = pictures.length - 1; i >= 0; i--) {
     pictures[i].parentNode.removeChild(pictures[i]);
   }
-  console.log('deletePictures');
 };
 
-const setRangePhotos = (cb) => {
-  imgFiltersForm.addEventListener('click', (evt) => {
+const setPopularPhotos = (cb) => {
+  popularFilterButton.addEventListener('click', (evt) => {
     deletePictures();
+    selectFilterButton(evt);
+    cb();
+  });
+};
 
+const setDefaultPhotos = (cb) => {
+  defaultFilterButton.addEventListener('click', (evt) => {
+    deletePictures();
+    selectFilterButton(evt);
+    cb();
+  });
+};
+
+const setRandomPhotos = (cb) => {
+  randomFilterButton.addEventListener('click', (evt) => {
+    deletePictures();
     selectFilterButton(evt);
     cb();
   });
@@ -123,5 +130,5 @@ effectsList.addEventListener('change', onEffectRadioBtnClick);
 pristine.addValidator(hashtagsElement, isHashtagsValid, errorText, 2, false);
 pristine.addValidator(descriptionElement, isDescriptionValid, errorMessageDescription, 2, false);
 
-export {setUserFormSubmit, showImgFiters, setRangePhotos};
+export {setUserFormSubmit, showImgFiters, setPopularPhotos, setDefaultPhotos, setRandomPhotos};
 
