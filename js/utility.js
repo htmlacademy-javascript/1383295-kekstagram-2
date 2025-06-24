@@ -33,6 +33,7 @@ const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
     : genitiveSingular;
 };
 
+
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
@@ -54,4 +55,16 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {COMMENTS_MIN, COMMENTS_MAX, randomIntFromInterval, toggleClass, isEscapeKey, makeElement, numDecline, showAlert};
+function debounce (callback, timeoutDelay = 500) {
+
+  let timeoutId;
+
+  return (...rest) => {
+
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+
+export {COMMENTS_MIN, COMMENTS_MAX, randomIntFromInterval, toggleClass, isEscapeKey, makeElement, numDecline, showAlert, debounce};
