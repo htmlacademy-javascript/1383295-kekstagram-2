@@ -88,7 +88,7 @@ const onBigPictureEscKeyDown = (evt) => {
     && !evt.target.classList.contains('text__description')
   ) {
     evt.preventDefault();
-    closeOpenModal();
+    // closeOpenModal();
   }
 };
 
@@ -123,7 +123,7 @@ const setUserFormSubmit = () => {
 
 imgUploadInput.addEventListener('change', closeOpenModal);
 imgUploadCancel.addEventListener('click', closeOpenModal);
-document.addEventListener('keydown', onBigPictureEscKeyDown);
+formElement.addEventListener('keydown', onBigPictureEscKeyDown);
 smallerClick.addEventListener('click', onSmallerClick);
 biggerClick.addEventListener('click', onBiggerClick);
 effectsList.addEventListener('change', onEffectRadioBtnClick);

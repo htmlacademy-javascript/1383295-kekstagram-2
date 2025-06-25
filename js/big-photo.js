@@ -14,6 +14,7 @@ let numShownComments = COMMENTS_LIMIT;
 const closeBigPicture = () => {
   toggleClass(bigPicture, 'hidden');
   numShownComments = COMMENTS_LIMIT;
+  loadButton.classList.remove('hidden');
 };
 
 const hideComments = () => {
@@ -38,7 +39,7 @@ const onBigPictureEscKeyDown = (evt) => {
   }
 };
 
-const renderComment = (photo) => {
+const renderComments = (photo) => {
   const { comments } = photo;
 
   commentsList.innerHTML = '';
@@ -66,46 +67,43 @@ const getMoreComments = () => {
   showComments();
   numShownComments += COMMENTS_LIMIT;
 
-  const allComments = Array.from(renderedComments);
-  const visibleComments = allComments.filter((element) => window.getComputedStyle(element).display === 'flex');
+  const visibleComments = [...renderedComments].filter((element) => window.getComputedStyle(element).display === 'flex');
   shownCommentCount.textContent = visibleComments.length;
+
+  if (visibleComments.length === renderedComments.length) {
+    loadButton.classList.add('hidden');
+  }
 };
 
-
-const show = (photo) => {
+const createBigPhoto = (photo) => {
   const {url, likes, description, comments} = photo;
 
-  const image = bigPicture.querySelector('.big-picture__img img'),
-    caption = bigPicture.querySelector('.social__caption'),
-    likesCount = bigPicture.querySelector('.likes-count');
+  bigPicture.querySelector('.big-picture__img img').src = url;
+  bigPicture.querySelector('.social__caption').textContent = description;
+  bigPicture.querySelector('.likes-count').textContent = likes;
 
-  image.src = url;
-  caption.textContent = description;
-  likesCount.textContent = likes;
   shownCommentCount.textContent = numShownComments;
   if (comments.length < numShownComments) {
     shownCommentCount.textContent = comments.length;
   }
   totalCommentCount.textContent = comments.length;
-};
 
+  if (totalCommentCount.textContent <= COMMENTS_LIMIT) {
+    loadButton.classList.add('hidden');
+  }
+};
 
 const showBigPicture = (photo) => {
-
-  show(photo);
-
-  renderComment(photo);
-
-  document.addEventListener('keydown', onBigPictureEscKeyDown);
-
+  createBigPhoto(photo);
+  renderComments(photo);
+  document.addEventListener('keydown', onBigPictureEscKeyDown, {once: true});
   toggleClass(bigPicture, 'hidden');
-
-};
-
-const onCloseBigPictureClick = () =>{
-  closeBigPicture();
 };
 
 loadButton.addEventListener('click', getMoreComments);
-closeButton.addEventListener('click', onCloseBigPictureClick);
+closeButton.addEventListener('click', () => {
+  closeBigPicture();
+  document.removeEventListener('keydown', onBigPictureEscKeyDown);
+});
+
 export {showBigPicture};
