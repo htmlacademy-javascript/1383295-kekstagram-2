@@ -2,7 +2,7 @@ const RANDOM_PHOTOS_NUMERO = 10;
 const RERENDER_DELAY = 500;
 
 import {renderPhotos} from './render.js';
-import {setUserFormSubmit, showImgFiters, setPopularPhotos, setDefaultPhotos, setRandomPhotos, closeOpenModal} from './load-image.js';
+import {setUserFormSubmit, showImgFiters, setPopularPhotos, setDefaultPhotos, setRandomPhotos} from './load-image.js';
 import {getData} from './api.js';
 import {showAlert, debounce} from './utility.js';
 import './avatar.js';

@@ -126,10 +126,9 @@ const setUserFormSubmit = () => {
 
 imgUploadInput.addEventListener('change', () => {
   closeOpenModal();
-  document.addEventListener('keydown', closeOpenModal);
+  document.addEventListener('keydown', onBigPictureEscKeyDown);
 });
 imgUploadCancel.addEventListener('click', closeOpenModal);
-formElement.addEventListener('keydown', onBigPictureEscKeyDown);
 smallerClick.addEventListener('click', onSmallerClick);
 biggerClick.addEventListener('click', onBiggerClick);
 effectsList.addEventListener('change', onEffectRadioBtnClick);
