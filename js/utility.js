@@ -33,7 +33,6 @@ const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
     : genitiveSingular;
 };
 
-
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
@@ -55,10 +54,9 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-function debounce (callback, timeoutDelay = 500) {
-
+// Устранение дребезга
+function debounce (callback, timeoutDelay = 1000) {
   let timeoutId;
-
   return (...rest) => {
 
     clearTimeout(timeoutId);

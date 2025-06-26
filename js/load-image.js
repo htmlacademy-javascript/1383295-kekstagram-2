@@ -108,9 +108,11 @@ const setUserFormSubmit = () => {
 
     if (isValid) {
       sendData(new FormData(formElement))
-        .then(appendNotification(templateSuccess))
-        .then(formElement.reset())
-        .then(closeOpenModal())
+        .then(() => {
+          appendNotification(templateSuccess);
+          closeOpenModal();
+          formElement.reset();
+        })
         .catch (
           () => {
             appendNotification(templateError);

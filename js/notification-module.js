@@ -8,16 +8,22 @@ const closeNotification = (evt) => {
   const successBtn = document.querySelector('.success__button');
   const errorElement = document.querySelector('.error');
   const errorbtn = document.querySelector('.error__button');
-  if (evt.target === successBtn || isEscapeKey(evt) || evt.target === existElement) {
-    existElement.remove();
 
+  if (evt.target === successBtn || isEscapeKey(evt) || evt.target === existElement) {
+    if (existElement) {
+      existElement.remove();
+    } else {
+      errorElement.remove();
+    }
     body.removeEventListener('click', closeNotification);
     body.removeEventListener('keydown', closeNotification);
   }
   if (evt.target === errorbtn || isEscapeKey(evt) || evt.target === errorElement) {
-    existElement.remove();
-    errorElement.remove();
-
+    if (existElement) {
+      existElement.remove();
+    } else {
+      errorElement.remove();
+    }
     body.removeEventListener('click', closeNotification);
     body.removeEventListener('keydown', closeNotification);
   }
