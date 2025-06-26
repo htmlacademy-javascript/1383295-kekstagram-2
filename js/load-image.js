@@ -78,6 +78,7 @@ const closeOpenModal = () => {
   toggleClass(document.body, 'modal-open');
 
   imgPreview.style.transform = `scale(${100}%)`;
+  document.removeEventListener('keydown', closeOpenModal);
   resetFilter();
 };
 
@@ -123,7 +124,10 @@ const setUserFormSubmit = () => {
 };
 
 
-imgUploadInput.addEventListener('change', closeOpenModal);
+imgUploadInput.addEventListener('change', () => {
+  closeOpenModal();
+  document.addEventListener('keydown', closeOpenModal);
+});
 imgUploadCancel.addEventListener('click', closeOpenModal);
 formElement.addEventListener('keydown', onBigPictureEscKeyDown);
 smallerClick.addEventListener('click', onSmallerClick);
@@ -132,5 +136,5 @@ effectsList.addEventListener('change', onEffectRadioBtnClick);
 pristine.addValidator(hashtagsElement, isHashtagsValid, errorText, 2, false);
 pristine.addValidator(descriptionElement, isDescriptionValid, errorMessageDescription, 2, false);
 
-export {setUserFormSubmit, showImgFiters, setPopularPhotos, setDefaultPhotos, setRandomPhotos};
+export {setUserFormSubmit, showImgFiters, setPopularPhotos, setDefaultPhotos, setRandomPhotos, closeOpenModal};
 
