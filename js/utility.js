@@ -1,6 +1,9 @@
 const COMMENTS_MIN = 0;
 const COMMENTS_MAX = 30;
+const COMMENTS_LIMIT = 5;
 const ALERT_SHOW_TIME = 5000;
+const RERENDER_DELAY = 500;
+const RANDOM_PHOTOS_NUMERO = 10;
 
 // Рандомайзер
 const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -33,6 +36,7 @@ const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
     : genitiveSingular;
 };
 
+// Выдаватель ошибок
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
@@ -64,5 +68,4 @@ function debounce (callback, timeoutDelay = 1000) {
   };
 }
 
-
-export {COMMENTS_MIN, COMMENTS_MAX, randomIntFromInterval, toggleClass, isEscapeKey, makeElement, numDecline, showAlert, debounce};
+export {COMMENTS_MIN, COMMENTS_MAX, RERENDER_DELAY, RANDOM_PHOTOS_NUMERO, COMMENTS_LIMIT, randomIntFromInterval, toggleClass, isEscapeKey, makeElement, numDecline, showAlert, debounce};

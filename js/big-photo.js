@@ -1,6 +1,5 @@
-import { toggleClass, makeElement, isEscapeKey} from './utility.js';
+import { toggleClass, makeElement, isEscapeKey, COMMENTS_LIMIT} from './utility.js';
 
-const COMMENTS_LIMIT = 5;
 const bigPicture = document.querySelector('.big-picture');
 const shownCommentCount = bigPicture.querySelector('.social__comment-shown-count');
 const totalCommentCount = bigPicture.querySelector('.social__comment-total-count');
@@ -93,7 +92,7 @@ const createBigPhoto = (photo) => {
   }
 };
 
-const showBigPicture = (photo) => {
+const getShowBigPicture = (photo) => {
   createBigPhoto(photo);
   renderComments(photo);
   document.addEventListener('keydown', onBigPictureEscKeyDown, {once: true});
@@ -106,4 +105,4 @@ closeButton.addEventListener('click', () => {
   document.removeEventListener('keydown', onBigPictureEscKeyDown);
 });
 
-export {showBigPicture};
+export {getShowBigPicture};

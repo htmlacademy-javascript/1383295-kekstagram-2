@@ -1,14 +1,14 @@
-import {numDecline} from './utility.js';
+import {numDecline} from '../utility.js';
 
 const MAX_HASHTAGS = 5;
 const MAX_SYMBOLS = 20;
 const MAX_DESCRIPTION = 140;
 
 let errorHashtags = '';
-const errorMessageDescription = () => `Длина комментария не может составлять больше ${MAX_DESCRIPTION} символов'`;
+const getErrorMessageDescription = () => `Длина комментария не может составлять больше ${MAX_DESCRIPTION} символов'`;
 const isDescriptionValid = (description) => description.length < MAX_DESCRIPTION;
 
-const errorText = () => errorHashtags;
+const getErrorText = () => errorHashtags;
 
 const isHashtagsValid = (value) => {
   errorHashtags = '';
@@ -61,4 +61,4 @@ const isHashtagsValid = (value) => {
   });
 };
 
-export {errorText, isHashtagsValid, isDescriptionValid, errorMessageDescription};
+export {getErrorText, isHashtagsValid, isDescriptionValid, getErrorMessageDescription};

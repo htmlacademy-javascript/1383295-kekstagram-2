@@ -2,30 +2,15 @@ import { isEscapeKey } from './utility.js';
 
 const body = document.body;
 
-const closeNotification = (evt) => {
+const onCloseNotification = (evt) => {
   evt.stopPropagation();
-  const existElement = document.querySelector('.success');
-  const successBtn = document.querySelector('.success__button');
-  const errorElement = document.querySelector('.error');
-  const errorbtn = document.querySelector('.error__button');
+  const target = evt.target;
+  const popup = document.querySelector('.popup');
 
-  if (evt.target === successBtn || isEscapeKey(evt) || evt.target === existElement) {
-    if (existElement) {
-      existElement.remove();
-    } else {
-      errorElement.remove();
-    }
-    body.removeEventListener('click', closeNotification);
-    body.removeEventListener('keydown', closeNotification);
-  }
-  if (evt.target === errorbtn || isEscapeKey(evt) || evt.target === errorElement) {
-    if (existElement) {
-      existElement.remove();
-    } else {
-      errorElement.remove();
-    }
-    body.removeEventListener('click', closeNotification);
-    body.removeEventListener('keydown', closeNotification);
+  if(target.classList.contains('popup') || isEscapeKey(evt) || target.classList.contains('success__button') || target.classList.contains('error__button')) {
+    popup.remove();
+    body.removeEventListener('click', onCloseNotification);
+    body.removeEventListener('keydown', onCloseNotification);
   }
 };
 
@@ -33,8 +18,8 @@ const appendNotification = (template, trigger = null) => {
   trigger?.();
   const notificationNode = template.cloneNode(true);
   body.append(notificationNode);
-  body.addEventListener('click', closeNotification);
-  body.addEventListener('keydown', closeNotification);
+  body.addEventListener('click', onCloseNotification);
+  body.addEventListener('keydown', onCloseNotification);
 };
 
 
