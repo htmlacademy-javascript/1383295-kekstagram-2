@@ -1,4 +1,4 @@
-import {getShowBigPicture} from './big-photo.js';
+import { getRenderBigPictire } from './big-photo.js';
 
 const container = document.querySelector('.pictures');
 const template = document.querySelector('#picture').content.querySelector('.picture');
@@ -21,7 +21,7 @@ const getRenderPhoto = (photo) => {
   const onPhotoElementClick = (evt) => {
     evt.preventDefault();
 
-    getShowBigPicture(photo);
+    getRenderBigPictire(photo);
   };
 
   element.addEventListener('click', onPhotoElementClick);
@@ -38,4 +38,4 @@ const getRenderPhotos = (photos) => {
   showImgFiters();
 };
 
-export {getRenderPhotos};
+export { getRenderPhotos };

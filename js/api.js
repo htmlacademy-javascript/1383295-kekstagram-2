@@ -10,6 +10,8 @@ const Method = {
   POST: 'POST',
 };
 
+const STATUS_CODE_SUCCESS = 200;
+
 const ErrorText = {
   GET_DATA: 'Не удалось загрузить данные. Попробуйте обновить страницу',
   SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз',
@@ -18,7 +20,7 @@ const ErrorText = {
 const load = (route, errorText, method = Method.GET, body = null) =>
   fetch(`${BASE_URL}${route}`, {method, body})
     .then((response) => {
-      if (!response.ok) {
+      if (response.status !== STATUS_CODE_SUCCESS) {
         throw new Error();
       }
       return response.json();
@@ -31,4 +33,4 @@ const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA);
 
 const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
 
-export {getData, sendData};
+export { getData, sendData };

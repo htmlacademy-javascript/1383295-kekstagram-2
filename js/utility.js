@@ -1,9 +1,6 @@
 const COMMENTS_MIN = 0;
 const COMMENTS_MAX = 30;
-const COMMENTS_LIMIT = 5;
 const ALERT_SHOW_TIME = 5000;
-const RERENDER_DELAY = 500;
-const RANDOM_PHOTOS_NUMERO = 10;
 
 // Рандомайзер
 const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -15,16 +12,6 @@ const toggleClass = (element, className = '') => {
 
 // Событие keydown Esc
 const isEscapeKey = (evt) => evt.key === 'Escape';
-
-// Фабрика html-элементов
-const makeElement = function (tagname, className, text) {
-  const element = document.createElement(tagname);
-  element.classList.add(className);
-  if (text) {
-    element.textContent = text;
-  }
-  return element;
-};
 
 // Пояснитель числительных
 const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
@@ -68,4 +55,4 @@ function debounce (callback, timeoutDelay = 1000) {
   };
 }
 
-export {COMMENTS_MIN, COMMENTS_MAX, RERENDER_DELAY, RANDOM_PHOTOS_NUMERO, COMMENTS_LIMIT, randomIntFromInterval, toggleClass, isEscapeKey, makeElement, numDecline, showAlert, debounce};
+export { COMMENTS_MIN, COMMENTS_MAX, randomIntFromInterval, toggleClass, isEscapeKey, numDecline, showAlert, debounce};

@@ -23,4 +23,4 @@ const appendNotification = (template, trigger = null) => {
 };
 
 
-export {appendNotification};
+export { appendNotification };
