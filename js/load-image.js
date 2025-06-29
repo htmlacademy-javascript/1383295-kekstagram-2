@@ -7,7 +7,7 @@ import { sendData } from './api.js';
 import { getErrorText, isHashtagsValid, isDescriptionValid, getErrorMessageDescription } from './validation&slider/validation.js';
 
 import { isEscapeKey, toggleClass, } from './utility.js';
-import { onEffectRadioBtnClick } from './validation&slider/slider.js';
+import { onEffectRadioBtnClick, resetFilter } from './validation&slider/slider.js';
 import { appendNotification } from './notification.js';
 
 const formElement = document.querySelector('.img-upload__form');
@@ -45,6 +45,13 @@ const onBiggerClick = () => {
   }
 };
 
+//Сброс масштаба изображения
+const resetScale = () => {
+  imgPreview.style.transform = `scale(${100}%)`;
+  scale = 1;
+  scaleControl.value = `${100}%`;
+};
+
 //Предупреждает закрытие модального окна при наборе хештегов и комментария
 const oneEscKeyDown = (evt) => {
   if (isEscapeKey(evt)
@@ -61,7 +68,8 @@ function closeOpenModal() {
   toggleClass(imgOverlay, 'hidden');
   toggleClass(document.body, 'modal-open');
 
-  scale = 1;
+  resetFilter();
+  resetScale();
   imgPreview.style.transform = `scale(${100}%)`;
   document.removeEventListener('keydown', oneEscKeyDown);
 }
