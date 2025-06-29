@@ -1,26 +1,20 @@
-const RANDOM_PHOTOS_NUMERO = 10;
-const RERENDER_DELAY = 500;
-
-import {renderPhotos} from './render.js';
-import {setUserFormSubmit, showImgFiters, setPopularPhotos, setDefaultPhotos, setRandomPhotos} from './load-image.js';
-import {getData} from './api.js';
-import {showAlert, debounce} from './utility.js';
+import { getRenderPhotos } from './render.js';
+import { setUserFormSubmit, } from './load-image.js';
+import { getData } from './api.js';
+import { showAlert } from './utility.js';
+import { initFilters } from './filtration.js';
 import './avatar.js';
 
 
+const displayPhotos = (data) => {
+  getRenderPhotos(data);
+  initFilters(data);
+};
+
 getData()
   .then((photos) => {
-    renderPhotos(photos);
-
-    setDefaultPhotos(debounce(() => renderPhotos(photos)), RERENDER_DELAY);
-
-    const popular = photos.slice().sort((min, max) => max.likes - min.likes);
-    setPopularPhotos(debounce(() => renderPhotos(popular)), RERENDER_DELAY);
-
-    const randomPhotos = photos.slice().sort(() => Math.random() - 0.5).splice(0, RANDOM_PHOTOS_NUMERO);
-    setRandomPhotos(debounce(() => renderPhotos(randomPhotos)), RERENDER_DELAY);
+    displayPhotos(photos.slice());
   })
-  .then(showImgFiters())
   .catch(
     (err) => {
       showAlert(err.message);

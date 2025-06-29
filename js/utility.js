@@ -13,16 +13,6 @@ const toggleClass = (element, className = '') => {
 // Событие keydown Esc
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-// Фабрика html-элементов
-const makeElement = function (tagname, className, text) {
-  const element = document.createElement(tagname);
-  element.classList.add(className);
-  if (text) {
-    element.textContent = text;
-  }
-  return element;
-};
-
 // Пояснитель числительных
 const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
   if (num % 10 === 0 || num % 100 > 4 && num % 100 < 21) {
@@ -33,7 +23,7 @@ const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
     : genitiveSingular;
 };
 
-
+// Выдаватель ошибок
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
@@ -55,10 +45,9 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-function debounce (callback, timeoutDelay = 500) {
-
+// Устранение дребезга
+function debounce (callback, timeoutDelay = 1000) {
   let timeoutId;
-
   return (...rest) => {
 
     clearTimeout(timeoutId);
@@ -66,5 +55,4 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-
-export {COMMENTS_MIN, COMMENTS_MAX, randomIntFromInterval, toggleClass, isEscapeKey, makeElement, numDecline, showAlert, debounce};
+export { COMMENTS_MIN, COMMENTS_MAX, randomIntFromInterval, toggleClass, isEscapeKey, numDecline, showAlert, debounce};

@@ -1,21 +1,27 @@
-import {showBigPicture} from './big-photo.js';
+import { getRenderBigPictire } from './big-photo.js';
 
 const container = document.querySelector('.pictures');
 const template = document.querySelector('#picture').content.querySelector('.picture');
 const fragment = document.createDocumentFragment();
 
-const renderPhoto = (photo) => {
-  const { url, description, likes } = photo;
+const showImgFiters = () => {
+  const imgFiters = document.querySelector('.img-filters');
+  imgFiters.classList.remove('img-filters--inactive');
+};
+
+const getRenderPhoto = (photo) => {
+  const { url, description, likes, comments } = photo;
   const element = template.cloneNode(true);
 
   element.querySelector('.picture__img').src = url;
   element.querySelector('.picture__img').alt = description;
   element.querySelector('.picture__likes').textContent = likes;
+  element.querySelector('.picture__comments').textContent = comments.length;
 
   const onPhotoElementClick = (evt) => {
     evt.preventDefault();
 
-    showBigPicture(photo);
+    getRenderBigPictire(photo);
   };
 
   element.addEventListener('click', onPhotoElementClick);
@@ -23,12 +29,13 @@ const renderPhoto = (photo) => {
   return element;
 };
 
-const renderPhotos = (photos) => {
+const getRenderPhotos = (photos) => {
   photos?.forEach((photo) => {
-    fragment.appendChild(renderPhoto(photo));
+    fragment.appendChild(getRenderPhoto(photo));
   });
 
   container.appendChild(fragment);
+  showImgFiters();
 };
 
-export {renderPhotos};
+export { getRenderPhotos };

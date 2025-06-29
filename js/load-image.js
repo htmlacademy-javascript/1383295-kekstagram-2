@@ -1,12 +1,11 @@
 import '../vendor/pristine/pristine.min.js';
-import {errorText, isHashtagsValid, isDescriptionValid, errorMessageDescription} from './validation.js';
-
-import {isEscapeKey, toggleClass} from './utility.js';
-import {onSmallerClick, onBiggerClick} from './slider&scale/scale-image.js';
-import {onEffectRadioBtnClick, resetFilter} from './slider&scale/slider.js';
-
 import { sendData } from './api.js';
-import { appendNotification} from './notification-module.js';
+import { onSmallerClick, onBiggerClick } from './validation&slider&scale/scale-image.js';
+import { getErrorText, isHashtagsValid, isDescriptionValid, getErrorMessageDescription } from './validation&slider&scale/validation.js';
+
+import { isEscapeKey, toggleClass, } from './utility.js';
+import { onEffectRadioBtnClick } from './validation&slider&scale/slider.js';
+import { appendNotification } from './notification.js';
 
 const formElement = document.querySelector('.img-upload__form');
 const biggerClick = formElement.querySelector('.scale__control--bigger');
@@ -23,66 +22,8 @@ const imgUploadCancel = formElement.querySelector('.img-upload__cancel');
 const templateSuccess = document.querySelector('#success').content.querySelector('.success');
 const templateError = document.querySelector('#error').content.querySelector('.error');
 
-const imgFiters = document.querySelector('.img-filters');
-const imgFiltersForm = document.querySelector('.img-filters__form');
-const imgFilterButtons = imgFiltersForm.children;
-const pictures = document.getElementsByClassName('picture');
-const popularFilterButton = document.querySelector('#filter-discussed');
-const defaultFilterButton = document.querySelector('#filter-default');
-const randomFilterButton = document.querySelector('#filter-random');
-
-const selectFilterButton = (evt) => {
-  for (let i = 0; i < imgFilterButtons.length; i++) {
-    imgFilterButtons[i].classList.remove('img-filters__button--active');
-  }
-  evt.target.classList.add('img-filters__button--active');
-};
-
-const deletePictures = () => {
-  for (let i = pictures.length - 1; i >= 0; i--) {
-    pictures[i].parentNode.removeChild(pictures[i]);
-  }
-};
-
-const setPopularPhotos = (cb) => {
-  popularFilterButton.addEventListener('click', (evt) => {
-    deletePictures();
-    selectFilterButton(evt);
-    cb();
-  });
-};
-
-const setDefaultPhotos = (cb) => {
-  defaultFilterButton.addEventListener('click', (evt) => {
-    deletePictures();
-    selectFilterButton(evt);
-    cb();
-  });
-};
-
-const setRandomPhotos = (cb) => {
-  randomFilterButton.addEventListener('click', (evt) => {
-    deletePictures();
-    selectFilterButton(evt);
-    cb();
-  });
-};
-
-const showImgFiters = () => {
-  imgFiters.classList.remove('img-filters--inactive');
-};
-
-//Закрывает и Открывает модальное окно, сброс настроек
-const closeOpenModal = () => {
-  toggleClass(imgOverlay, 'hidden');
-  toggleClass(document.body, 'modal-open');
-
-  imgPreview.style.transform = `scale(${100}%)`;
-  resetFilter();
-};
-
 //Предупреждает закрытие модального окна при наборе хештегов и комментария
-const onBigPictureEscKeyDown = (evt) => {
+const oneEscKeyDown = (evt) => {
   if (isEscapeKey(evt)
     && !evt.target.classList.contains('text__hashtags')
     && !evt.target.classList.contains('text__description')
@@ -92,13 +33,25 @@ const onBigPictureEscKeyDown = (evt) => {
   }
 };
 
+//Закрывает и Открывает модальное окно, сброс настроек
+function closeOpenModal() {
+  toggleClass(imgOverlay, 'hidden');
+  toggleClass(document.body, 'modal-open');
+
+  imgPreview.style.transform = `scale(${100}%)`;
+  document.removeEventListener('keydown', oneEscKeyDown);
+}
+
+const onCloseClick = () => {
+  closeOpenModal();
+};
+
 //Pristine
 const pristine = new Pristine(formElement, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
   errorTextParent: 'img-upload__field-wrapper',
 });
-
 
 const setUserFormSubmit = () => {
   formElement.addEventListener('submit', (evt) => {
@@ -108,9 +61,11 @@ const setUserFormSubmit = () => {
 
     if (isValid) {
       sendData(new FormData(formElement))
-        .then(appendNotification(templateSuccess))
-        .then(formElement.reset())
-        .then(closeOpenModal())
+        .then(() => {
+          appendNotification(templateSuccess);
+          closeOpenModal();
+          formElement.reset();
+        })
         .catch (
           () => {
             appendNotification(templateError);
@@ -120,15 +75,20 @@ const setUserFormSubmit = () => {
   });
 };
 
+imgUploadInput.addEventListener('change', () => {
+  closeOpenModal();
+  if (document.body.classList.contains('modal-open')) {
+    document.addEventListener('keydown', oneEscKeyDown);
+  }
+});
 
-imgUploadInput.addEventListener('change', closeOpenModal);
-imgUploadCancel.addEventListener('click', closeOpenModal);
-document.addEventListener('keydown', onBigPictureEscKeyDown);
+imgUploadCancel.addEventListener('click', onCloseClick);
 smallerClick.addEventListener('click', onSmallerClick);
 biggerClick.addEventListener('click', onBiggerClick);
 effectsList.addEventListener('change', onEffectRadioBtnClick);
-pristine.addValidator(hashtagsElement, isHashtagsValid, errorText, 2, false);
-pristine.addValidator(descriptionElement, isDescriptionValid, errorMessageDescription, 2, false);
 
-export {setUserFormSubmit, showImgFiters, setPopularPhotos, setDefaultPhotos, setRandomPhotos};
+pristine.addValidator(hashtagsElement, isHashtagsValid, getErrorText, 2, false);
+pristine.addValidator(descriptionElement, isDescriptionValid, getErrorMessageDescription, 2, false);
+
+export { setUserFormSubmit };
 
