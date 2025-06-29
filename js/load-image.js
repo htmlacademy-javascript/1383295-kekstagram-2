@@ -1,16 +1,21 @@
+const SCALE_MAX = 1;
+const SCALE_MIN = 0.25;
+const SCALE_STEP = 0.25;
+
 import '../vendor/pristine/pristine.min.js';
 import { sendData } from './api.js';
-import { onSmallerClick, onBiggerClick } from './validation&slider&scale/scale-image.js';
-import { getErrorText, isHashtagsValid, isDescriptionValid, getErrorMessageDescription } from './validation&slider&scale/validation.js';
+import { getErrorText, isHashtagsValid, isDescriptionValid, getErrorMessageDescription } from './validation&slider/validation.js';
 
 import { isEscapeKey, toggleClass, } from './utility.js';
-import { onEffectRadioBtnClick } from './validation&slider&scale/slider.js';
+import { onEffectRadioBtnClick } from './validation&slider/slider.js';
 import { appendNotification } from './notification.js';
 
 const formElement = document.querySelector('.img-upload__form');
+const imgPreview = formElement.querySelector('img');
+const scaleControl = formElement.querySelector('.scale__control--value');
 const biggerClick = formElement.querySelector('.scale__control--bigger');
 const smallerClick = formElement.querySelector('.scale__control--smaller');
-const imgPreview = formElement.querySelector('img');
+
 const effectsList = formElement.querySelector('.effects__list');
 const hashtagsElement = formElement.querySelector('.text__hashtags');
 const descriptionElement = formElement.querySelector('.text__description');
@@ -21,6 +26,24 @@ const imgUploadCancel = formElement.querySelector('.img-upload__cancel');
 
 const templateSuccess = document.querySelector('#success').content.querySelector('.success');
 const templateError = document.querySelector('#error').content.querySelector('.error');
+
+let scale = 1;
+
+//Уменьшает масштаб изображения
+const onSmallerClick = () => {
+  if (scale > SCALE_MIN) {
+    imgPreview.style.transform = `scale(${scale -= SCALE_STEP})`;
+    scaleControl.value = `${scale * 100}%`;
+  }
+};
+
+//Увеличивает масштаб изображения
+const onBiggerClick = () => {
+  if (scale < SCALE_MAX) {
+    imgPreview.style.transform = `scale(${scale += SCALE_STEP})`;
+    scaleControl.value = `${scale * 100}%`;
+  }
+};
 
 //Предупреждает закрытие модального окна при наборе хештегов и комментария
 const oneEscKeyDown = (evt) => {
@@ -38,10 +61,12 @@ function closeOpenModal() {
   toggleClass(imgOverlay, 'hidden');
   toggleClass(document.body, 'modal-open');
 
+  scale = 1;
   imgPreview.style.transform = `scale(${100}%)`;
   document.removeEventListener('keydown', oneEscKeyDown);
 }
 
+//Закрывает модальное при нажатии на крестик
 const onCloseClick = () => {
   closeOpenModal();
 };
@@ -53,6 +78,7 @@ const pristine = new Pristine(formElement, {
   errorTextParent: 'img-upload__field-wrapper',
 });
 
+//Работа с основной формой
 const setUserFormSubmit = () => {
   formElement.addEventListener('submit', (evt) => {
 
