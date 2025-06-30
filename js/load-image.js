@@ -10,22 +10,32 @@ import { isEscapeKey, toggleClass, } from './utility.js';
 import { onEffectRadioBtnClick, resetFilter } from './validation&slider/slider.js';
 import { appendNotification } from './notification.js';
 
+//Шаблоны попапов
+const templateSuccess = document.querySelector('#success').content.querySelector('.success');
+const templateError = document.querySelector('#error').content.querySelector('.error');
+
 const formElement = document.querySelector('.img-upload__form');
 const imgPreview = formElement.querySelector('img');
+const imgUploadCancel = formElement.querySelector('.img-upload__cancel');
+const imgUploadInput = formElement.querySelector('.img-upload__input');
+const imgOverlay = formElement.querySelector('.img-upload__overlay');
+
+//Масштабирование и эффекты
 const scaleControl = formElement.querySelector('.scale__control--value');
 const biggerClick = formElement.querySelector('.scale__control--bigger');
 const smallerClick = formElement.querySelector('.scale__control--smaller');
-
 const effectsList = formElement.querySelector('.effects__list');
+
+//Валидация
 const hashtagsElement = formElement.querySelector('.text__hashtags');
 const descriptionElement = formElement.querySelector('.text__description');
 
-const imgUploadInput = formElement.querySelector('.img-upload__input');
-const imgOverlay = formElement.querySelector('.img-upload__overlay');
-const imgUploadCancel = formElement.querySelector('.img-upload__cancel');
-
-const templateSuccess = document.querySelector('#success').content.querySelector('.success');
-const templateError = document.querySelector('#error').content.querySelector('.error');
+//Pristine
+const pristine = new Pristine(formElement, {
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'img-upload__field-wrapper--error',
+  errorTextParent: 'img-upload__field-wrapper',
+});
 
 let scale = 1;
 
@@ -52,6 +62,11 @@ const resetScale = () => {
   scaleControl.value = `${100}%`;
 };
 
+const toggleModal = () => {
+  toggleClass(imgOverlay, 'hidden');
+  toggleClass(document.body, 'modal-open');
+};
+
 //Предупреждает закрытие модального окна при наборе хештегов и комментария
 const oneEscKeyDown = (evt) => {
   if (isEscapeKey(evt)
@@ -59,32 +74,36 @@ const oneEscKeyDown = (evt) => {
     && !evt.target.classList.contains('text__description')
   ) {
     evt.preventDefault();
-    closeOpenModal();
+    closeModalForm();
   }
 };
 
-//Закрывает и Открывает модальное окно, сброс настроек
-function closeOpenModal() {
-  toggleClass(imgOverlay, 'hidden');
-  toggleClass(document.body, 'modal-open');
+//Открывает модальное окно
+const openModalForm = () => {
+  if (imgOverlay.classList.contains('hidden')) {
+    toggleModal();
+    document.addEventListener('keydown', oneEscKeyDown);
+  }
+};
 
-  resetFilter();
-  resetScale();
-  imgPreview.style.transform = `scale(${100}%)`;
-  document.removeEventListener('keydown', oneEscKeyDown);
+//Закрывает модальное окно
+function closeModalForm() {
+  if (!imgOverlay.classList.contains('hidden')) {
+    toggleModal();
+    formElement.reset();
+    pristine.reset();
+    resetFilter();
+    resetScale();
+    imgPreview.src = 'img/upload-default-image.jpg';
+    imgPreview.style.transform = `scale(${100}%)`;
+    document.removeEventListener('keydown', oneEscKeyDown);
+  }
 }
 
 //Закрывает модальное при нажатии на крестик
 const onCloseClick = () => {
-  closeOpenModal();
+  closeModalForm();
 };
-
-//Pristine
-const pristine = new Pristine(formElement, {
-  classTo: 'img-upload__field-wrapper',
-  errorClass: 'img-upload__field-wrapper--error',
-  errorTextParent: 'img-upload__field-wrapper',
-});
 
 //Работа с основной формой
 const setUserFormSubmit = () => {
@@ -97,8 +116,7 @@ const setUserFormSubmit = () => {
       sendData(new FormData(formElement))
         .then(() => {
           appendNotification(templateSuccess);
-          closeOpenModal();
-          formElement.reset();
+          closeModalForm();
         })
         .catch (
           () => {
@@ -110,7 +128,7 @@ const setUserFormSubmit = () => {
 };
 
 imgUploadInput.addEventListener('change', () => {
-  closeOpenModal();
+  openModalForm();
   if (document.body.classList.contains('modal-open')) {
     document.addEventListener('keydown', oneEscKeyDown);
   }
